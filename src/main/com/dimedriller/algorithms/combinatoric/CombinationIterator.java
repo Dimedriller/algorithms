@@ -2,6 +2,9 @@ package com.dimedriller.algorithms.combinatoric;
 
 import java.util.Iterator;
 
+/**
+ * Iterator which generates combinations (https://en.wikipedia.org/wiki/Combination)
+ */
 public class CombinationIterator implements Iterator<int[]> {
     private final int[] current;
     private final int n;
@@ -11,7 +14,6 @@ public class CombinationIterator implements Iterator<int[]> {
         if (k <= 0 || k > n) {
             throw new IllegalArgumentException("Wrong (n,k) combination: (" + n + "," + k + ")");
         }
-
 
         current = new int[k];
         this.n = n;
@@ -46,14 +48,15 @@ public class CombinationIterator implements Iterator<int[]> {
         System.arraycopy(current, 0, next, 0, k);
 
         int shiftIndex = findShiftIndex(current, n);
-        if (shiftIndex != -1) {
+        if (shiftIndex < 0) {
+            hasMore = false;
+        } else {
             int shiftValue = current[shiftIndex] + 1;
             for(int index = 0; index < k - shiftIndex; index++) {
                 current[index + shiftIndex] = shiftValue + index;
             }
         }
 
-        hasMore = shiftIndex >= 0;
         return next;
     }
 }
